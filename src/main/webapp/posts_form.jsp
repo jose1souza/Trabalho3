@@ -39,15 +39,15 @@
 					</div>
 
 					<div class="mb-3">
-						<label for="post_user_id" class="form_label">Escolha um
-							Usuário:
-						</label> 
-							<select name="post_users" id="post_users_id">
-							
-							<option value="volvo">Volvo</option>
-							<option value="saab">Saab</option>
-							<option value="mercedes">Mercedes</option>
-							<option value="audi">Audi</option>
+						<label for="post_user_id" class="form-label">Escolha um
+							Usuário:</label> <select name="user_id" id="post_user_id"
+							class="form-control">
+							<option value="">Selecione um usuário...</option>
+							<c:forEach var="user" items="${usuarios}">
+								<option value="${user.getId()}"
+									<c:if test="${post.getUser() != null && post.getUser().getId() == user.getId()}">selected</c:if>>
+									${user.getName()}</option>
+							</c:forEach>
 						</select>
 					</div>
 

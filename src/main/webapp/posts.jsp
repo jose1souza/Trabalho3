@@ -40,11 +40,17 @@
 								<th scope="row">${post.getId()}</th>
 								<td>${post.getContent()}</td>
 								<td>${post.getPostDate()}</td>
+								<td>
+								   <a href="${pageContext.request.contextPath}/posts/update?postId=${post.getId()}" 
+									   class="bi bi-pencil-square"></a>
+								   <a href="${pageContext.request.contextPath}/posts/delete?postId=${post.getId()}" 
+								   	   class="bi bi-trash"></a>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-				<a href="posts_form.jsp" class="btn btn-primary"> Cadastrar
+				<a href="${pageContext.request.contextPath}/posts/save" class="btn btn-primary"> Cadastrar
 					Posts </a>
 			</div>
 			<div class="col-md-2"></div>

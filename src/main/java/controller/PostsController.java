@@ -11,10 +11,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelException;
 import model.Post;
+import model.User;
 import model.dao.DAOFactory;
 import model.dao.PostDAO;
+import model.dao.UserDAO;
 
-@WebServlet(urlPatterns = {"/posts"})
+@WebServlet(urlPatterns = {"/posts", "/posts/delete", "/posts/save"})
 public class PostsController extends HttpServlet {
 	
 	@Override
@@ -22,15 +24,27 @@ public class PostsController extends HttpServlet {
 			throws ServletException, IOException {
 		
 		//TODO: Log - apagar ao final
-		String action = req.getRequestURI();
+		String contextPath = req.getContextPath();
+		String action = req.getRequestURI().substring(contextPath.length());
 		System.out.println("URL: " + action);
 		
 		switch (action) {
-		case "/facebook/posts": {
+		case "/posts": {
 			loadPosts(req);
 			
 			RequestDispatcher rd = req.getRequestDispatcher("/posts.jsp");
 			rd.forward(req, resp);
+			break;
+		}
+		case "/posts/save": {
+			loadUsers(req);
+			RequestDispatcher rd = req.getRequestDispatcher("/posts_form.jsp");
+			rd.forward(req, resp);
+			break;
+		}
+		case "/posts/delete": {
+			deletePost(req);
+			resp.sendRedirect(contextPath + "/posts");
 			break;
 		}
 		default:
@@ -38,6 +52,21 @@ public class PostsController extends HttpServlet {
 			
 			System.out.println(message);
 			throw new IllegalArgumentException(message);
+		}
+	}
+	
+	private void deletePost(HttpServletRequest req) {
+		String postIdStr = req.getParameter("postId");
+
+		int postId = Integer.parseInt(postIdStr);
+		Post postToBeDeleted = new Post(postId);
+
+		PostDAO dao = DAOFactory.createDAO(PostDAO.class);
+		try {
+			dao.delete(postToBeDeleted);
+		} catch (ModelException e) {
+			// Log no servidor
+			e.printStackTrace();
 		}
 	}
 	
@@ -53,5 +82,18 @@ public class PostsController extends HttpServlet {
 		}
 		
 		req.setAttribute("posts_list", posts);
+	}
+	
+	private void loadUsers(HttpServletRequest req) {
+		UserDAO dao = DAOFactory.createDAO(UserDAO.class);
+		List<User> users = List.of();
+		
+		try {
+			users = dao.listAll();
+		} catch (ModelException me) {
+			me.printStackTrace();
+		}
+		
+		req.setAttribute("usuarios", users);
 	}
 }

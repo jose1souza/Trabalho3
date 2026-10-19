@@ -29,8 +29,8 @@
 			class="flex-grow-1 d-flex flex-column justify-content-center align-items-center text-center">
 			<h1 class="my-4">Bem-vindo ao Facebook CRUD</h1>
 			<div class="d-flex gap-3 flex-wrap justify-content-center">
-				<a href="/facebook/users" class="btn btn-secondary btn-lg">Usuários</a>
-				<a href="/facebook/posts" class="btn btn-secondary btn-lg">Posts</a>
+				<a href="${pageContext.request.contextPath}/users" class="btn btn-secondary btn-lg">Usuários</a>
+				<a href="${pageContext.request.contextPath}/posts" class="btn btn-secondary btn-lg">Posts</a>
 			</div>
 		</main>
 
