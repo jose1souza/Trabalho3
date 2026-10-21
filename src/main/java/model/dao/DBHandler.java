@@ -38,6 +38,17 @@ public class DBHandler {
 			throw new ModelException("Erro ao atribuir string", e);
 		}
 	}
+	
+	public void setDate(int i, Date date) throws ModelException {
+		validatePreparedStatement();
+		
+		try {
+			preparedStatement.setDate(i, (java.sql.Date) date);
+		} catch (SQLException e) {
+			close();
+			throw new ModelException("Erro ao atribuir string", e);
+		}
+	}
 
 	public void setInt(int i, int value) throws ModelException {
 		validatePreparedStatement();
@@ -47,6 +58,17 @@ public class DBHandler {
 		} catch (SQLException e) {
 			close();
 			throw new ModelException("Erro ao atribuir inteiro", e);
+		}
+	}
+	
+	public void setNullDate(int i) throws ModelException {
+		validatePreparedStatement();
+
+		try {
+			preparedStatement.setNull(i, java.sql.Types.DATE);
+		} catch (SQLException e) {
+			close();
+			throw new ModelException("Erro ao atribuir null", e);
 		}
 	}
 
@@ -161,4 +183,5 @@ public class DBHandler {
 		if (resultSet == null)
 			throw new ModelException("Result set não foi criado");
 	}
+
 }
